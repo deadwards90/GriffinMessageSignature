@@ -60,14 +60,16 @@ var services = new ServiceCollection()
                .WithMandatoryComponent(new HttpHeaderComponent("Date"))
                .WithMandatoryComponent(SignatureComponent.Method)
                .WithMandatoryComponent(SignatureComponent.Path)
-               .WithMandatoryComponent(SignatureComponent.RequestTargetUri);
+               .WithOptionalComponent(SignatureComponent.Query)
+               //.WithMandatoryComponent(SignatureComponent.RequestTargetUri)
+               ;
 
           signingOptions.SetParameters = signatureParams =>
           {
                signatureParams.Algorithm = "ed25519";
                signatureParams.KeyId = signingKeyId;
                signatureParams.WithCreated(DateTimeOffset.Now);
-               signatureParams.WithExpires(DateTimeOffset.Now.AddMinutes(4));
+               //signatureParams.WithExpires(DateTimeOffset.Now.AddMinutes(4));
                signatureParams.WithNonce(Guid.NewGuid().ToString());
           };
      })
@@ -82,14 +84,20 @@ var services = new ServiceCollection()
 
      // Griffin API Client setup with NSign
      .AddTransient<GriffinMessageSignatureHandler>()
+     .AddTransient<HeadersDebugHandler>()
+     .AddTransient<FixContentDigestHandler>()
      .AddHttpClient<GriffinClient>(client =>
      {
           client.BaseAddress = new Uri("https://api.griffin.com/");
+          //client.BaseAddress = new Uri("http://localhost:5000/");
           client.DefaultRequestHeaders.Authorization =
                new AuthenticationHeaderValue("GriffinAPIKey", apiKey);
      })
      .AddHttpMessageHandler<GriffinMessageSignatureHandler>()
-     .AddContentDigestAndSigningHandlers()
+     .AddContentDigestHandler()
+     .AddHttpMessageHandler<FixContentDigestHandler>()
+     .AddSigningHandler()
+     .AddHttpMessageHandler<HeadersDebugHandler>()
      .Services
      .BuildServiceProvider();
 

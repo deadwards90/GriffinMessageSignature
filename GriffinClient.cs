@@ -16,7 +16,7 @@ public class GriffinClient
     {
         var request = new HttpRequestMessage(HttpMethod.Post, "v0/security/message-signature/verify");
 
-        var requestContent = new StringContent(JsonSerializer.Serialize(new { Message = "Hello, World!" }),
+        var requestContent = new StringContent("{\"hello\": \"world\"}",
             System.Text.Encoding.UTF8, "application/json");
         request.Content = requestContent;
 
