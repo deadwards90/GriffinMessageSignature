@@ -13,8 +13,8 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Http.Diagnostics" Version="8.10.0" />
-    <PackageReference Include="NSign.BouncyCastle" Version="1.0.4" />
-    <PackageReference Include="NSign.Client" Version="1.0.4" />
+    <PackageReference Include="NSign.BouncyCastle" Version="1.1.0" />
+    <PackageReference Include="NSign.Client" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>

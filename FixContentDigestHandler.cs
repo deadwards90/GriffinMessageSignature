@@ -1,5 +1,13 @@
 namespace GriffinMessageSignature;
 
+/// <summary>
+/// Left here just for reference, this was what was previously fixing the issue with NSec
+/// around the content digest header
+/// going from
+/// SHA-512=HashHere==
+/// to
+/// sha-512:HashHere==:
+/// </summary>
 public class FixContentDigestHandler : DelegatingHandler
 {
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

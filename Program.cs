@@ -85,7 +85,6 @@ var services = new ServiceCollection()
      // Griffin API Client setup with NSign
      .AddTransient<GriffinMessageSignatureHandler>()
      .AddTransient<HeadersDebugHandler>()
-     .AddTransient<FixContentDigestHandler>()
      .AddHttpClient<GriffinClient>(client =>
      {
           client.BaseAddress = new Uri("https://api.griffin.com/");
@@ -94,9 +93,7 @@ var services = new ServiceCollection()
                new AuthenticationHeaderValue("GriffinAPIKey", apiKey);
      })
      .AddHttpMessageHandler<GriffinMessageSignatureHandler>()
-     .AddContentDigestHandler()
-     .AddHttpMessageHandler<FixContentDigestHandler>()
-     .AddSigningHandler()
+     .AddContentDigestAndSigningHandlers()
      .AddHttpMessageHandler<HeadersDebugHandler>()
      .Services
      .BuildServiceProvider();
